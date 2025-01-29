@@ -1,71 +1,57 @@
 import React from 'react';
 
 // don't change the Component name "App"
-export default class Form extends React.Component {
-  constructor() {
-    super();
-      this.state = {
-        email: '',
-        isAgreeWithTerms: false,
-    };
-  }
+export default class FormWithRef extends React.Component {
 
-  handleEmail =(event) =>{
-    this.setState({email:event.target.value});
-  }
-
-  handleCheck =(event) =>{
-    this.setState({isAgreeWithTerms:event.target.checked});
-  }
-  handleSubmit =() => {
-    if(!this.isValidEmail(this.state.email)){
-        alert('Bad email');
-        return;
-    }
-    if(!this.state.isAgreeWithTerms){
-        alert('You dont agree');
-        return;
-    }
-    this.setState({isAgreeWithTerms:false,email:''});
-
-    alert('Good');
-  }
-
-    isValidEmail(email) {
-
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})$/.test(email)) {
-
-            return false
-
-        } return true
+    constructor() {
+        super();
+        this.state = {
+            card: '',
+            email: '',
+        };
+        this.firstNameRef = React.createRef();
+        this.emailRef = React.createRef();
 
     }
-  render() {
-    // TODO: implement component
-    const { email, isAgreeWithTerms } = this.state;
+
+
+    handleChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value }, () => {
+            if (this.state.card.length === 16)
+                this.emailRef.current.focus();
+
+        });
+    }
+
+    componentDidMount() {
+        this.firstNameRef.current.focus();
+    }
+
+    render() {
+        // TODO: implement component
+        const { email, card } = this.state;
 
         return (
             <div>
+                <input
+                    type="text"
+                    name="card"
+                    placeholder="card"
+                    value={card}
+                    onChange={this.handleChange}
+                    ref={this.firstNameRef}
+                />
+                <br />
                 <input
                     type="email"
                     name="email"
                     placeholder="email"
                     value={email}
-                    onChange={this.handleEmail}
+                    onChange={this.handleChange}
+                    ref={this.emailRef}
                 />
-                <br />
-                <label>
-                    <input
-                        type="checkbox"
-                        name="isAgreeWithTerms"
-                        checked={isAgreeWithTerms}
-                        onChange={this.handleCheck}
-                    />
-                    I agree with terms and conditions
-                </label>
-                <br />
-                <button onClick={this.handleSubmit}>Send</button>
+
             </div>
         );
-  }
+    }
 }
