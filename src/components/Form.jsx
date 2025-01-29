@@ -1,77 +1,71 @@
-import React from "react";
+import React from 'react';
 
-class Form extends React.Component {
-
-    state = {
-        firstName: '',
+// don't change the Component name "App"
+export default class Form extends React.Component {
+  constructor() {
+    super();
+      this.state = {
         email: '',
-        message:'',
-        select: '',
-        subscription:false,
-        gender:'',
-    }
+        isAgreeWithTerms: false,
+    };
+  }
 
-    handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
-    }
+  handleEmail =(event) =>{
+    this.setState({email:event.target.value});
+  }
 
-    handleChekbox = (event) => {
-        this.setState({ [event.target.name]: event.target.checked })
-        
+  handleCheck =(event) =>{
+    this.setState({isAgreeWithTerms:event.target.checked});
+  }
+  handleSubmit =() => {
+    if(!this.isValidEmail(this.state.email)){
+        alert('Bad email');
+        return;
     }
+    if(!this.state.isAgreeWithTerms){
+        alert('You dont agree');
+        return;
+    }
+    this.setState({isAgreeWithTerms:false,email:''});
 
-    validateName = () => {
-       if(this.state.firstName.length < 5) {
-        alert('You first name is too short');
-       }
-    }
+    alert('Good');
+  }
 
-    validateEmail = () =>{
-       if(!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.state.email))
-       alert('email is not valid');
-    }
+    isValidEmail(email) {
 
-    render() {
-        return <div>
-            <input
-                type="text"
-                name="firstName"
-                placeholder="firstName"
-                value={this.state.firstName}
-                onChange={this.handleChange}
-                onBlur={this.validateName}
-            />
-            <input
-                type="text"
-                name="email"
-                placeholder="email"
-                value={this.state.email}
-                onChange={this.handleChange}
-                onBlur={this.validateEmail}
-            />
-            <br />
-            <textarea 
-                name="message"
-                value={this.state.message} 
-                onChange={this.handleChange}
-            />
-            <br />
-            <select name="select" value={this.state.select} onChange={this.handleChange}> 
-            <option value='' disabled></option>
-                <option value='1'>1</option>
-                <option value='2'>2</option>
-                <option value='3'>3</option>
-            </select>
-            <br />
-            <label>
-            <input type="checkbox" name="subscription" checked={this.state.subscription} onChange={this.handleChekbox}></input>
-            Subscription
-            </label>
-            <br/>
-            <input type="radio" name="gender" value='male' onChange={this.handleChange} checked={this.state.gender === 'male'}/> Male
-            <input type="radio" name="gender" value='female' onChange={this.handleChange} checked={this.state.gender === 'female'}/>Female
-        </div>
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})$/.test(email)) {
+
+            return false
+
+        } return true
+
     }
+  render() {
+    // TODO: implement component
+    const { email, isAgreeWithTerms } = this.state;
+
+        return (
+            <div>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="email"
+                    value={email}
+                    onChange={this.handleEmail}
+                />
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        name="isAgreeWithTerms"
+                        checked={isAgreeWithTerms}
+                        onChange={this.handleCheck}
+                    />
+                    I agree with terms and conditions
+                </label>
+                <br />
+                <button onClick={this.handleSubmit}>Send</button>
+            </div>
+        );
+  }
 }
-
-export { Form };
