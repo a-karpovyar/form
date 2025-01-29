@@ -5,53 +5,54 @@ export default class FormWithRef extends React.Component {
 
     constructor() {
         super();
-        this.state = {
-            card: '',
-            email: '',
-        };
-        this.firstNameRef = React.createRef();
+        this.cardRef = React.createRef();
         this.emailRef = React.createRef();
 
     }
 
 
-    handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value }, () => {
-            if (this.state.card.length === 16)
-                this.emailRef.current.focus();
+    // handleChange = (event) => {
+    //     this.setState({ [event.target.name]: event.target.value }, () => {
+    //         if (this.state.card.length === 16)
+    //             this.emailRef.current.focus();
 
-        });
-    }
+    //     });
+    // }
 
-    componentDidMount() {
-        this.firstNameRef.current.focus();
+    // componentDidMount() {
+    //     this.cardRef.current.focus();
+    // }
+
+    hadleSubmit= (event) =>{
+        event.preventDefault();
+        if(this.cardRef.current.value.length <16){
+            alert('invalid numde r')
+            return;
+        }
+//about email 
+this.cardRef.current.value='';
+this.emailRef.current.value='';
     }
 
     render() {
-        // TODO: implement component
-        const { email, card } = this.state;
 
         return (
-            <div>
+            <form onSubmit={this.hadleSubmit}>
                 <input
                     type="text"
                     name="card"
                     placeholder="card"
-                    value={card}
-                    onChange={this.handleChange}
-                    ref={this.firstNameRef}
+                    ref={this.cardRef}
                 />
                 <br />
                 <input
                     type="email"
                     name="email"
                     placeholder="email"
-                    value={email}
-                    onChange={this.handleChange}
                     ref={this.emailRef}
                 />
-
-            </div>
+                <button>Send</button>
+            </form>
         );
     }
 }
