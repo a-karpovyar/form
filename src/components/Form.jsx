@@ -5,10 +5,19 @@ class Form extends React.Component {
     state = {
         firstName: '',
         email: '',
+        message:'',
+        select: '',
+        subscription:false,
+        gender:'',
     }
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
+    }
+
+    handleChekbox = (event) => {
+        this.setState({ [event.target.name]: event.target.checked })
+        
     }
 
     validateName = () => {
@@ -40,6 +49,27 @@ class Form extends React.Component {
                 onChange={this.handleChange}
                 onBlur={this.validateEmail}
             />
+            <br />
+            <textarea 
+                name="message"
+                value={this.state.message} 
+                onChange={this.handleChange}
+            />
+            <br />
+            <select name="select" value={this.state.select} onChange={this.handleChange}> 
+            <option value='' disabled></option>
+                <option value='1'>1</option>
+                <option value='2'>2</option>
+                <option value='3'>3</option>
+            </select>
+            <br />
+            <label>
+            <input type="checkbox" name="subscription" checked={this.state.subscription} onChange={this.handleChekbox}></input>
+            Subscription
+            </label>
+            <br/>
+            <input type="radio" name="gender" value='male' onChange={this.handleChange} checked={this.state.gender === 'male'}/> Male
+            <input type="radio" name="gender" value='female' onChange={this.handleChange} checked={this.state.gender === 'female'}/>Female
         </div>
     }
 }
